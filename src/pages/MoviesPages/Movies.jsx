@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
-import { NavLink, useLocation, useSearchParams } from "react-router-dom";
+import { useLocation, useSearchParams } from "react-router-dom";
 import { searchMovies } from "api/api";
+import { List, Conteiner, Linker, Input, Form, Button, Label } from "components/styled";
 
 const Movies = () => {
     const [search, setSearch] = useState([]);
@@ -26,6 +27,7 @@ const Movies = () => {
 
     useEffect(() => {
         findMovies();
+        // eslint-disable-next-line
     }, []);
 
     const handleSubmit = e => {
@@ -44,23 +46,23 @@ const Movies = () => {
 
     return (
         <>
-            <form onSubmit={handleSubmit}>
-                <label>
-                    <input type="text" onChange={updateInput} />
-                    <button type="submit">Search</button>
-                </label>
-            </form>
+            <Form onSubmit={handleSubmit}>
+                <Label>
+                    <Input type="text" onChange={updateInput} />
+                    <Button type="submit">Search</Button>
+                </Label>
+            </Form>
             <div>
                 {status === 'pending' && 'Loading...'}
                 {status === 'rejected' && <h3>{error.message}</h3>}
                 {status === 'resolved' && (
-                    <div>
-                        <ul>
-                            {search.map(({ title, id }) => (
-                                <NavLink to={`/movies/${id}`} state={{ from: location }} key={id}>{title}</NavLink>
+                    <Conteiner>
+                        <List>
+                            {search && search.map(({ title, id }) => (
+                                <Linker to={`/movies/${id}`} state={{ from: location }} key={id}>{title}</Linker>
                             ))}
-                        </ul>
-                    </div>
+                        </List>
+                    </Conteiner>
                 )}
             </div>
         </>

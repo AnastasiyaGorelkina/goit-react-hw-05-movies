@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { getMoviesDeteils } from "api/api";
-import { Outlet, useLocation, useParams, Link } from "react-router-dom";
+import { Outlet, useLocation, useParams } from "react-router-dom";
+import { Back, Text, BoxConteiner, Box } from "components/styled";
 
 const MovieDetails = () => {
     const [details, setDetails] = useState('');
@@ -16,7 +17,7 @@ const MovieDetails = () => {
             try {
                 const data = await getMoviesDeteils(movieId);
                 setDetails(data);
-                setStatus('resoled');
+                setStatus('resolved');
             } catch (error) {
                 setStatus('rejected');
                 setError(error);
@@ -30,30 +31,30 @@ const MovieDetails = () => {
     return (
         <div>
             <div>
-                <Link to={location.state?.from ?? '/'}>Go back</Link>
+                <Back to={location.state?.from ?? '/'}>Go back</Back>
             </div>
             {status === 'pending' && 'Loading...'}
             {status === 'rejected' && <h3>{error.message}</h3>}
             {status === 'resolved' && (
                 <div>
-                    <div>
+                    <BoxConteiner>
                         <div>
                             <img src={`${baseUrl}${poster_path}`} alt={title} width="400px" />
                         </div>
                         <div>
                             {<h1>{title}</h1>}
-                            <p>User Score: {userScore}</p>
+                            <Text>User Score: {userScore}</Text>
                             <h2>Overview</h2>
-                            <p>{overview}</p>
+                            <Text>{overview}</Text>
                             <h2>Genres</h2>
                             {genres && genres.map(el => <p key={el.id}>{el.name}</p>)}
                         </div>
-                    </div>
-                    <div>
-                        <p>Additional information</p>
-                        <Link to="cast">Cast</Link>
-                        <Link to="reviews">Reviews</Link>
-                    </div>
+                    </BoxConteiner>
+                    <Box>
+                        <Text>Additional information</Text>
+                        <Back to="cast">Cast</Back>
+                        <Back to="reviews">Reviews</Back>
+                    </Box>
                 </div>
             )}
             <Outlet />

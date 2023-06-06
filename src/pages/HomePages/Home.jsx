@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { getTrendMovies } from "api/api";
+import { List, Conteiner, Linker } from "components/styled";
 
 const Home = () => {
     const [trend, setTrend] = useState();
@@ -26,14 +27,14 @@ const Home = () => {
             {status === 'pending' && 'Loading...'}
             {status === 'rejected' && <h3>{error.message}</h3>}
             {status === 'resolved' && (
-                <div>
+                <Conteiner>
                     <h1>Trending Films</h1>
-                    <li>
+                    <List>
                         {trend && trend.map(({ title, id }) => (
-                            <link to={`./movies/${id}`} key={id}>{title}</link>
+                            <Linker to={`./movies/${id}`} key={id}>{title}</Linker>
                         ))}
-                    </li>
-                </div>
+                    </List>
+                </Conteiner>
             )}
         </div>
     );
